@@ -2,32 +2,71 @@
 
 <head>
     <meta charset="UTF-8">
-    <script src="popup.js"></script>
+    <style>
+        input[type="text"]{
+            margin: 5px 0 10px 0;
+            width: 100%;
+            padding: 5px;
+        }
+        textarea{
+            padding: 5px;
+        }
+        input[type="radio"]{
+            vertical-align: sub;
+        }
+        label{
+            font-weight: bold;
+            font-size: 14px;
+        }
+        button {
+            cursor: pointer;
+            width: 120px;
+            height: 30px;
+            line-height: 30px;
+            padding: 0;
+            border: 0;
+            background: none;
+            background-color: #3377d6;
+            font-size: 14px;
+            color: white;
+            box-shadow: none;
+            font-weight: normal;
+        }
+        button:hover {
+            background-color: #317ef3;
+            border-bottom: 1px solid #2868c8;
+            box-shadow: 1px 1px 1px #ccc;
+        }
+
+        #wait {
+            color: #fd0000;
+        }
+    </style>
 </head>
 
 <body style="width: 500px;">
     <h3>Agg比价维度查询</h3>
 
-    <input type="radio" name="idType" id="tid" value="tid" checked>
-    <label for="tid">tranactionId</label>
+    <label>
+        <input type="radio" name="idType" id="tid" autocomplete="off" checked="">TranactionId
+    </label>
+    <label>
+        <input type="radio" name="idType" id="oid" autocomplete="off"> OrderId
+    </label>
+    <input type="text" placeholder="输入transactionId或orderId" name="key" id="id"><br>
 
-    <input type="radio" name="idType" id="oid" value="oid">
-    <label for="oid">orderId</label>
-
-    <span style="color:red;">*</span>:<br>
-    <input type="text" name="key" id="id" style="width: 80%;"><br>
-
-    <label for="flightNums">flightNums</label><br>
-    <input type="text" name="flightNums" id="flightNums" placeholder="英文逗号分隔，格式：CA1234,CA2345" style="width: 80%;">
+    <label for="flightNums">FlightNums：</label><br>
+    <input type="text" name="flightNums" id="flightNums" placeholder="输入查询航组的航班号，航组有多个航班以英文逗号分隔：CA1234,MU2345">
     <br>
 
     <button id="submit">查询</button>
     <button id="copy" data-clipboard-target="#result">复制查询结果</button>
+    <span id="wait"></span>
     <hr>
 
     <textarea name="result" id="result" cols="30" rows="10" placeholder="查询结果" style="margin: 0px;height: 278px;width: 100%;"></textarea>
 
-
+    <script src="popup.js"></script>
 </body>
 
 </html>

@@ -38,18 +38,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let id = getId()
         if (!id) {
-            getIdInput().style.border = 'solid 1px red'
+            getIdInput().style.border = '2px solid #fb4c4c'
         }
 
         let flightNums = getFlightNums()
         if (!flightNums) {
-            getFlightNumsInput().style.border = 'solid 1px red'
+            getFlightNumsInput().style.border = '2px solid #fb4c4c'
         }
 
         if (idType && id && flightNums) {
-            // alert(`idType:${idType},id:${id},flightNums:${flightNums}`)
-            $.get(`http://localhost:2333/?${idType}=${id}&flights=${flightNums}`, function (data) {
+            $('#result').val('')
+            $('#wait').show().html('查询中，请耐心等待...')
+            const url = `http://localhost:2333/?${idType}=${id}&flights=${flightNums}`
+            $.get(url, function (data) {
+                $('#wait').hide()
                 $('#result').val(JSON.stringify(data, null, 2))
+            }).catch(err => {
+                $('#wait').html('查询出错')
             });
         }
     }
