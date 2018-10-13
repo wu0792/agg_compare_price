@@ -11395,61 +11395,90 @@ document.addEventListener('DOMContentLoaded', () => {
     new clipboard__WEBPACK_IMPORTED_MODULE_1___default.a('#copy')
 
     function getIdTypeInput() {
-        return document.querySelector('[name="idType"]:checked')
+        return jquery__WEBPACK_IMPORTED_MODULE_0___default()('[name="idType"]:checked')
     }
 
     function getIdType() {
         let checked = getIdTypeInput()
-        return checked ? checked.value : ''
+        return checked ? checked.val() : ''
     }
 
     function getIdInput() {
-        return document.querySelector('#id')
+        return jquery__WEBPACK_IMPORTED_MODULE_0___default()('#id')
     }
 
     function getId() {
-        return getIdInput().value.trim()
+        return getIdInput().val().trim()
     }
 
     function getFlightNumsInput() {
-        return document.querySelector('#flightNums')
+        return jquery__WEBPACK_IMPORTED_MODULE_0___default()('#flightNums')
     }
 
     function getFlightNums() {
         let flightNums = getFlightNumsInput()
-        return flightNums ? flightNums.value.trim() : ''
+        return flightNums ? flightNums.val().trim() : ''
     }
 
     function onSubmit() {
-        getIdInput().style.border = ''
-        getFlightNumsInput().style.border = ''
+        getIdInput().css('border', '')
+        getFlightNumsInput().css('border', '')
 
         let idType = getIdType()
 
-        let id = getId()
-        if (!id) {
-            getIdInput().style.border = '2px solid #fb4c4c'
-        }
-
         let flightNums = getFlightNums()
         if (!flightNums) {
-            getFlightNumsInput().style.border = '2px solid #fb4c4c'
+            getFlightNumsInput().css('border', '2px solid #fb4c4c').focus()
+        }
+
+        let id = getId()
+        if (!id) {
+            getIdInput().css('border', '2px solid #fb4c4c').focus()
         }
 
         if (idType && id && flightNums) {
-            jquery__WEBPACK_IMPORTED_MODULE_0___default()('#result').val('')
-            jquery__WEBPACK_IMPORTED_MODULE_0___default()('#wait').show().html('查询中，请耐心等待...')
+            jquery__WEBPACK_IMPORTED_MODULE_0___default()('#result').html('')
+            jquery__WEBPACK_IMPORTED_MODULE_0___default()('#msg').html('查询中，请耐心等待...')
             const url = `http://localhost:2333/?${idType}=${id}&flights=${flightNums}`
             jquery__WEBPACK_IMPORTED_MODULE_0___default.a.get(url, function (data) {
-                jquery__WEBPACK_IMPORTED_MODULE_0___default()('#wait').hide()
-                jquery__WEBPACK_IMPORTED_MODULE_0___default()('#result').val(JSON.stringify(data, null, 2))
+                jquery__WEBPACK_IMPORTED_MODULE_0___default()('#msg').html('')
+                jquery__WEBPACK_IMPORTED_MODULE_0___default()('#result').html(JSON.stringify(data, null, 2))
+                jquery__WEBPACK_IMPORTED_MODULE_0___default()('#copy').click()
             }).catch(err => {
-                jquery__WEBPACK_IMPORTED_MODULE_0___default()('#wait').html('查询出错')
+                jquery__WEBPACK_IMPORTED_MODULE_0___default()('#msg').html('查询出错')
             });
         }
     }
 
-    document.querySelector('#submit').addEventListener('click', ev => {
+    function onCopySuccess() {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()('#msg').html('已经复制')
+    }
+
+    getIdInput().bind('blur', ev => {
+        ev.target.value = ev.target.value.trim().toLowerCase()
+    }).bind('keydown', ev => {
+        if (ev.keyCode === 13) {
+            getFlightNumsInput().focus()
+        }
+    })
+
+    getFlightNumsInput().bind('blur', ev => {
+        ev.target.value = ev.target.value.trim().toUpperCase().replace(/[;；，]/g, ',')
+    }).bind('keydown', ev => {
+        if (ev.keyCode === 13) {
+            onSubmit()
+        }
+    })
+
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('[name="idType"]').bind('change', ev => {
+        getIdInput().focus()
+    })
+
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('#copy').bind('click', ev => {
+        onCopySuccess()
+    })
+
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('#submit').bind('click', ev => {
         onSubmit()
     })
 })

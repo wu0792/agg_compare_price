@@ -38,7 +38,7 @@
             box-shadow: 1px 1px 1px #ccc;
         }
 
-        #wait {
+        #msg {
             color: #fd0000;
         }
     </style>
@@ -53,7 +53,7 @@
     <label>
         <input type="radio" name="idType" id="oid" autocomplete="off"> OrderId
     </label>
-    <input type="text" placeholder="输入transactionId或orderId" name="key" id="id"><br>
+    <input type="text" placeholder="输入TransactionId或OrderId" name="key" id="id" autofocus><br>
 
     <label for="flightNums">FlightNums：</label><br>
     <input type="text" name="flightNums" id="flightNums" placeholder="输入查询航组的航班号，航组有多个航班以英文逗号分隔：CA1234,MU2345">
@@ -61,7 +61,7 @@
 
     <button id="submit">查询</button>
     <button id="copy" data-clipboard-target="#result">复制查询结果</button>
-    <span id="wait"></span>
+    <span id="msg"></span>
     <hr>
 
     <textarea name="result" id="result" cols="30" rows="10" placeholder="查询结果" style="margin: 0px;height: 278px;width: 100%;"></textarea>

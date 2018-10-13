@@ -5,61 +5,90 @@ document.addEventListener('DOMContentLoaded', () => {
     new ClipBoard('#copy')
 
     function getIdTypeInput() {
-        return document.querySelector('[name="idType"]:checked')
+        return $('[name="idType"]:checked')
     }
 
     function getIdType() {
         let checked = getIdTypeInput()
-        return checked ? checked.value : ''
+        return checked ? checked.val() : ''
     }
 
     function getIdInput() {
-        return document.querySelector('#id')
+        return $('#id')
     }
 
     function getId() {
-        return getIdInput().value.trim()
+        return getIdInput().val().trim()
     }
 
     function getFlightNumsInput() {
-        return document.querySelector('#flightNums')
+        return $('#flightNums')
     }
 
     function getFlightNums() {
         let flightNums = getFlightNumsInput()
-        return flightNums ? flightNums.value.trim() : ''
+        return flightNums ? flightNums.val().trim() : ''
     }
 
     function onSubmit() {
-        getIdInput().style.border = ''
-        getFlightNumsInput().style.border = ''
+        getIdInput().css('border', '')
+        getFlightNumsInput().css('border', '')
 
         let idType = getIdType()
 
-        let id = getId()
-        if (!id) {
-            getIdInput().style.border = '2px solid #fb4c4c'
-        }
-
         let flightNums = getFlightNums()
         if (!flightNums) {
-            getFlightNumsInput().style.border = '2px solid #fb4c4c'
+            getFlightNumsInput().css('border', '2px solid #fb4c4c').focus()
+        }
+
+        let id = getId()
+        if (!id) {
+            getIdInput().css('border', '2px solid #fb4c4c').focus()
         }
 
         if (idType && id && flightNums) {
-            $('#result').val('')
-            $('#wait').show().html('查询中，请耐心等待...')
+            $('#result').html('')
+            $('#msg').html('查询中，请耐心等待...')
             const url = `http://localhost:2333/?${idType}=${id}&flights=${flightNums}`
             $.get(url, function (data) {
-                $('#wait').hide()
-                $('#result').val(JSON.stringify(data, null, 2))
+                $('#msg').html('')
+                $('#result').html(JSON.stringify(data, null, 2))
+                $('#copy').click()
             }).catch(err => {
-                $('#wait').html('查询出错')
+                $('#msg').html('查询出错')
             });
         }
     }
 
-    document.querySelector('#submit').addEventListener('click', ev => {
+    function onCopySuccess() {
+        $('#msg').html('已经复制')
+    }
+
+    getIdInput().bind('blur', ev => {
+        ev.target.value = ev.target.value.trim().toLowerCase()
+    }).bind('keydown', ev => {
+        if (ev.keyCode === 13) {
+            getFlightNumsInput().focus()
+        }
+    })
+
+    getFlightNumsInput().bind('blur', ev => {
+        ev.target.value = ev.target.value.trim().toUpperCase().replace(/[;；，]/g, ',')
+    }).bind('keydown', ev => {
+        if (ev.keyCode === 13) {
+            onSubmit()
+        }
+    })
+
+    $('[name="idType"]').bind('change', ev => {
+        getIdInput().focus()
+    })
+
+    $('#copy').bind('click', ev => {
+        onCopySuccess()
+    })
+
+    $('#submit').bind('click', ev => {
         onSubmit()
     })
 })
