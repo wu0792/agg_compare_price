@@ -1,0 +1,33 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="popup.js"></script>
+</head>
+
+<body style="width: 500px;">
+    <h3>Agg比价维度查询</h3>
+
+    <input type="radio" name="idType" id="tid" value="tid" checked>
+    <label for="tid">tranactionId</label>
+
+    <input type="radio" name="idType" id="oid" value="oid">
+    <label for="oid">orderId</label>
+
+    <span style="color:red;">*</span>:<br>
+    <input type="text" name="key" id="id" style="width: 80%;"><br>
+
+    <label for="flightNums">flightNums</label><br>
+    <input type="text" name="flightNums" id="flightNums" placeholder="英文逗号分隔，格式：CA1234,CA2345" style="width: 80%;">
+    <br>
+
+    <button id="submit">查询</button>
+    <button id="copy" data-clipboard-target="#result">复制查询结果</button>
+    <hr>
+
+    <textarea name="result" id="result" cols="30" rows="10" placeholder="查询结果" style="margin: 0px;height: 278px;width: 100%;"></textarea>
+
+
+</body>
+
+</html>
