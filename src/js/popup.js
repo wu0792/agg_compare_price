@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getIdType() {
         let checked = getIdTypeInput()
-        return checked ? checked.val() : ''
+        return checked ? checked.attr('id') : ''
     }
 
     function getIdInput() {
