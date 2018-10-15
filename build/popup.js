@@ -11392,7 +11392,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    new clipboard__WEBPACK_IMPORTED_MODULE_1___default.a('#copy')
+    new clipboard__WEBPACK_IMPORTED_MODULE_1___default.a('#copy');
+
+    (function init() {
+        let idType = localStorage.getItem('idType') || 'tid'
+        let id = localStorage.getItem('id')
+        let flightNums = localStorage.getItem('flightNums')
+        let result = localStorage.getItem('result')
+
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()(`#${idType}`).click()
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()('#id').val(id)
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()('#flightNums').val(flightNums)
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()('#result').val(result)
+    })()
 
     function getIdTypeInput() {
         return jquery__WEBPACK_IMPORTED_MODULE_0___default()('[name="idType"]:checked')
@@ -11442,7 +11454,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const url = `http://localhost:2333/?${idType}=${id}&flights=${flightNums}`
             jquery__WEBPACK_IMPORTED_MODULE_0___default.a.get(url, function (data) {
                 jquery__WEBPACK_IMPORTED_MODULE_0___default()('#msg').html('')
-                jquery__WEBPACK_IMPORTED_MODULE_0___default()('#result').html(JSON.stringify(data, null, 2))
+                let result = JSON.stringify(data, null, 2)
+                localStorage.setItem('result', result)
+                jquery__WEBPACK_IMPORTED_MODULE_0___default()('#result').html(result)
                 jquery__WEBPACK_IMPORTED_MODULE_0___default()('#copy').click()
             }).catch(err => {
                 jquery__WEBPACK_IMPORTED_MODULE_0___default()('#msg').html('查询出错')
@@ -11455,7 +11469,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     getIdInput().bind('blur', ev => {
-        ev.target.value = ev.target.value.trim().toLowerCase()
+        let value = ev.target.value = ev.target.value.trim().toLowerCase()
+        localStorage.setItem('id', value)
     }).bind('keydown', ev => {
         if (ev.keyCode === 13) {
             getFlightNumsInput().focus()
@@ -11463,14 +11478,18 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     getFlightNumsInput().bind('blur', ev => {
-        ev.target.value = ev.target.value.trim().toUpperCase().replace(/[;；，]/g, ',')
+        let flightNums = ev.target.value = ev.target.value.trim().toUpperCase().replace(/[;；，]/g, ',')
+        localStorage.setItem('flightNums', flightNums)
     }).bind('keydown', ev => {
         if (ev.keyCode === 13) {
             onSubmit()
         }
     })
 
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()('[name="idType"]').bind('change', ev => {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('input[type="text"],textarea').bind('focus', ev => ev.target.select())
+
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('[name="idType"]').bind('click', ev => {
+        localStorage.setItem('idType', jquery__WEBPACK_IMPORTED_MODULE_0___default()(ev.target).attr('id'))
         getIdInput().focus()
     })
 

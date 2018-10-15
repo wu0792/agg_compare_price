@@ -2,7 +2,19 @@ import $ from 'jquery'
 import ClipBoard from 'clipboard'
 
 document.addEventListener('DOMContentLoaded', () => {
-    new ClipBoard('#copy')
+    new ClipBoard('#copy');
+
+    (function init() {
+        let idType = localStorage.getItem('idType') || 'tid'
+        let id = localStorage.getItem('id')
+        let flightNums = localStorage.getItem('flightNums')
+        let result = localStorage.getItem('result')
+
+        $(`#${idType}`).click()
+        $('#id').val(id)
+        $('#flightNums').val(flightNums)
+        $('#result').val(result)
+    })()
 
     function getIdTypeInput() {
         return $('[name="idType"]:checked')
@@ -52,7 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const url = `http://localhost:2333/?${idType}=${id}&flights=${flightNums}`
             $.get(url, function (data) {
                 $('#msg').html('')
-                $('#result').html(JSON.stringify(data, null, 2))
+                let result = JSON.stringify(data, null, 2)
+                localStorage.setItem('result', result)
+                $('#result').html(result)
                 $('#copy').click()
             }).catch(err => {
                 $('#msg').html('查询出错')
@@ -65,7 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     getIdInput().bind('blur', ev => {
-        ev.target.value = ev.target.value.trim().toLowerCase()
+        let value = ev.target.value = ev.target.value.trim().toLowerCase()
+        localStorage.setItem('id', value)
     }).bind('keydown', ev => {
         if (ev.keyCode === 13) {
             getFlightNumsInput().focus()
@@ -73,14 +88,18 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     getFlightNumsInput().bind('blur', ev => {
-        ev.target.value = ev.target.value.trim().toUpperCase().replace(/[;；，]/g, ',')
+        let flightNums = ev.target.value = ev.target.value.trim().toUpperCase().replace(/[;；，]/g, ',')
+        localStorage.setItem('flightNums', flightNums)
     }).bind('keydown', ev => {
         if (ev.keyCode === 13) {
             onSubmit()
         }
     })
 
-    $('[name="idType"]').bind('change', ev => {
+    $('input[type="text"],textarea').bind('focus', ev => ev.target.select())
+
+    $('[name="idType"]').bind('click', ev => {
+        localStorage.setItem('idType', $(ev.target).attr('id'))
         getIdInput().focus()
     })
 
