@@ -59,14 +59,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (idType && id && flightNums) {
-            $('#result').html('')
+            $('#result').val('')
             $('#msg').html('查询中，请耐心等待...')
-            const url = `http://localhost:2333/?${idType}=${id}&flights=${flightNums}`
+            const url = `http://localhost:2333/?${idType}=${id}&flightNums=${flightNums}`
             $.get(url, function (data) {
                 $('#msg').html('')
                 let result = JSON.stringify(data, null, 2)
+                $('#result').val(result)
                 localStorage.setItem('result', result)
-                $('#result').html(result)
                 $('#copy').click()
             }).catch(err => {
                 $('#msg').html('查询出错')
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function onCopySuccess() {
-        $('#msg').html('已经复制')
+        $('#msg').html('已复制查询结果')
     }
 
     getIdInput().bind('blur', ev => {

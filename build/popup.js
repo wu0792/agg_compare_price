@@ -11449,14 +11449,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (idType && id && flightNums) {
-            jquery__WEBPACK_IMPORTED_MODULE_0___default()('#result').html('')
+            jquery__WEBPACK_IMPORTED_MODULE_0___default()('#result').val('')
             jquery__WEBPACK_IMPORTED_MODULE_0___default()('#msg').html('查询中，请耐心等待...')
-            const url = `http://localhost:2333/?${idType}=${id}&flights=${flightNums}`
+            const url = `http://localhost:2333/?${idType}=${id}&flightNums=${flightNums}`
             jquery__WEBPACK_IMPORTED_MODULE_0___default.a.get(url, function (data) {
                 jquery__WEBPACK_IMPORTED_MODULE_0___default()('#msg').html('')
                 let result = JSON.stringify(data, null, 2)
+                jquery__WEBPACK_IMPORTED_MODULE_0___default()('#result').val(result)
                 localStorage.setItem('result', result)
-                jquery__WEBPACK_IMPORTED_MODULE_0___default()('#result').html(result)
                 jquery__WEBPACK_IMPORTED_MODULE_0___default()('#copy').click()
             }).catch(err => {
                 jquery__WEBPACK_IMPORTED_MODULE_0___default()('#msg').html('查询出错')
@@ -11465,7 +11465,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function onCopySuccess() {
-        jquery__WEBPACK_IMPORTED_MODULE_0___default()('#msg').html('已经复制')
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()('#msg').html('已复制查询结果')
     }
 
     getIdInput().bind('blur', ev => {
