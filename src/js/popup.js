@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (idType && id && flightNums) {
             $('#result').val('')
             $('#msg').html('查询中，请耐心等待...')
-            const url = `http://localhost:2333/?${idType}=${id}&flightNums=${flightNums}`
+            const url = `http://dst89539:2333/?${idType}=${id}&flightNums=${flightNums}`
             $.get(url, function (data) {
                 $('#msg').html('')
                 let result = JSON.stringify(data, null, 2)
